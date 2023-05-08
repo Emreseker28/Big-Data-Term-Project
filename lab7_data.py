@@ -65,28 +65,32 @@ def LoadData(batch_size_train=10, batch_size_test=10):
     #price.describe()
     #km.describe()
     #car_age.describe()
-    data = pd.concat([price, km, car_age], axis=1)
+    data = pd.concat([price.rename('Price'), km.rename('Kilometers'), car_age.rename('Car Age')], axis=1)
     #print(data)
     
     df = data
-    df = pd.DataFrame(data=data)
-    #print(data)
+    
+    from sklearn.model_selection import train_test_split
+    train, test = train_test_split(df, test_size=0.2, random_state=25)
+    #df = pd.DataFrame(data=data)
+    #print(df)
 
-    train = df.sample(frac=0.8, random_state=25)
-    test = df.drop(train.index)
-    #test_pt = torch.Tensor()
-    #train_pt = torch.Tensor()
+    #train = df.sample(frac=0.8, random_state=25)
+    #test = df.drop(train.index)
+    test_pt = torch.Tensor(test[['Price', 'Kilometers', 'Car Age']].to_numpy())
+    train_pt = torch.Tensor(train[['Price', 'Kilometers', 'Car Age']].to_numpy())
     print(f"No. of training examples: {train.shape[0]}")
 
     # debug
     # self = DataSet(train_pt)
 
-    return DataSet(train, batch_size_train), DataSet(test, batch_size_test)
+    return DataSet(train_pt, batch_size_train), DataSet(test_pt, batch_size_test)
 
 if __name__ == '__main__':
-    #cannot get train data to be transfered here
     train, test = LoadData()
-    
-    
+    print(train)
+    x, y = next(iter(train)) 
+    plt.plot(torch.arange(train.x_num), x[0,:,0],'gs'
+             ,torch.arange(train.y_num)+train.x_num,y[0,:],'bs')
 
 # %%

@@ -5,7 +5,7 @@ import os
 import matplotlib.pyplot as plt
 import sys
 import pandas as pd
-from comet_ml import Experiment
+#from comet_ml import Experiment
 if 'lab7_model' in sys.modules:
     del sys.modules['lab7_model']
 if 'lab7_data' in sys.modules:
@@ -19,15 +19,12 @@ layer_dim = 3
 epoches = 100
 steps = 150
 
-experiment = Experiment(project_name="Second Hand Car Data")
+#experiment = Experiment(project_name="Second Hand Car Data")
 
 dataset_train, dataset_test = LoadData(batch, 10)
 x, y = next(iter(dataset_train))
-df = pd.read_csv('./archive.zip', low_memory=False)
-df = df.rename(
-    columns= {'Region': 'region', 'Country': 'country', 'State': 'state', 'City': 'city',
-              'Month': 'month', 'Day': 'day', 'Year': 'year', 'AvgTemperature': 'avg_temperature'}
-)
+df1 = pd.read_csv('car_data1.csv', low_memory=False)
+df2 = pd.read_csv('car_data2.csv', low_memory=False)
 
     
 model = Model(x.size(2), hiden_dim, layer_dim, y.size(1))
@@ -52,9 +49,9 @@ for epoche in range(epoches):
     for step in range(steps):
         inputs, labels = next(iter(dataset_train))
         
-        # normalizacja
-        inputs = inputs / torch.Tensor([110.,12.])
-        labels = labels / torch.Tensor([110.])
+        # data is already normalized
+        #inputs = inputs / torch.Tensor([110.,12.])
+        #labels = labels / torch.Tensor([110.])
 
         # Zero your gradients for every batch!
         optimizer.zero_grad()
@@ -74,8 +71,6 @@ model.save()
 #%%
 model.eval()
 inputs, labels = next(iter(dataset_test))
-inputs = inputs / torch.Tensor([110.,12.])
-labels = labels / torch.Tensor([110.])
 pred = model(inputs).detach()
 plt.plot(torch.arange(inputs.size(1)), inputs[0,:,0],'gs'
              ,torch.arange(outputs.size(1))+inputs.size(1),pred[0,:],'bs',
