@@ -16,7 +16,7 @@ from lab7_data import LoadData
 batch = 100
 hiden_dim = 8
 layer_dim = 3
-epoches = 100
+epochs = 75
 steps = 150
 
 #experiment = Experiment(project_name="Second Hand Car Data")
@@ -44,7 +44,7 @@ model.train()
 optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
 # https://pytorch.org/docs/stable/nn.html#loss-functions
 loss_fn = torch.nn.MSELoss(reduction="mean")
-for epoche in range(epoches):
+for epoche in range(epochs):
     err = 0.
     for step in range(steps):
         inputs, labels = next(iter(dataset_train))
@@ -76,16 +76,4 @@ plt.plot(torch.arange(inputs.size(1)), inputs[0,:,0],'gs'
              ,torch.arange(outputs.size(1))+inputs.size(1),pred[0,:],'bs',
              torch.arange(outputs.size(1))+inputs.size(1),labels[0,:],'rs')
 
-
-# %%
-import plotly.express as px
-map_df = df.query('year < 2020').groupby(['country', 'year'])[['avg_temperature']].mean().reset_index()
-fig = px.choropleth(
-    map_df, locations= 'country', locationmode= 'country names',
-    animation_frame= 'year', color= 'avg_temperature',
-    hover_name= 'country', color_continuous_scale= 'RdYlBu_r',
-    title= 'Average temperature of countries between 1995 - 2019'
-)
-fig.update_layout(title= {'x': 0.5})
-fig.show()
 # %%

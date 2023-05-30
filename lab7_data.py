@@ -10,23 +10,20 @@ import pandas as pd
 
 
 class DataSet():
-    def __init__(self, data, batch=10, x_num=6, y_num=1):
+    def __init__(self, data, batch=10):
         self.data = data
         self.batch = batch
-        self.x_num = x_num
-        self.y_num = y_num
 
     def augment(self, x, y):
         return x, y
 
     def next_batch(self):
-        s = (self.x_num+self.y_num)
-        n = self.data.size(0) - s
+        n = self.data.size(0)
         idx = (torch.rand(self.batch)*n).long()
-        idx = idx.unsqueeze(1).expand(-1, s) + torch.arange(0, s)
+        #idx = idx.unsqueeze(1).expand(-1, s) + torch.arange(0, s)
         d = self.data[idx]
         
-        yield self.augment(d[:, :self.x_num, :], d[:, self.x_num:, 0])
+        yield self.augment(d[:, 1:], d[:, 0])
 
     def __iter__(self) -> Iterator[torch.Tensor]:
         return iter(self.next_batch())
@@ -90,7 +87,8 @@ if __name__ == '__main__':
     train, test = LoadData()
     print(train)
     x, y = next(iter(train)) 
-    plt.plot(torch.arange(train.x_num), x[0,:,0],'gs'
-             ,torch.arange(train.y_num)+train.x_num,y[0,:],'bs')
+    print(y, y.size())
 
 # %%
+#boxplot for brands
+#3d visualization

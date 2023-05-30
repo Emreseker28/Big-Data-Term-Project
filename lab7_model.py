@@ -43,10 +43,10 @@ if __name__ == '__main__':
     model = RNNModel(2, 12, 4,  1)
     model.info()
 
-    from lab7_data import LoadData
-    train, _ = LoadData()
-    x, y = next(iter(train))
+    #from lab7_data import LoadData
+    #train, test = LoadData()
+    #x, y = next(iter(train))
 
-    print( model(x).size(), y.size())
+    #print( model(x).size(), y.size())
 
 # %%
