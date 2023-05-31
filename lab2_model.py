@@ -17,11 +17,15 @@ class TinyModel(torch.nn.Module):
         x = self.linear3(x)
         x = self.activation(x)
         x = self.linear4(x)
-        #x = self.activation2(x)
+        x = self.activation2(x)
         return x
     def save(self, patch='lab7_model.pt'):
         torch.save(self.state_dict(), patch)
         print("Model saved: %s" % patch)
+    def info(self):
+        print(self)
+        print("Params: %i" % sum([param.nelement()
+                                  for param in self.parameters()]))
 if __name__=='__main__':
     w = 2
     tinymodel = TinyModel(w = w)
@@ -37,7 +41,7 @@ if __name__=='__main__':
     for param in tinymodel.linear2.parameters():
         print(param)
     #test
-    x = torch.rand(10, w)
+    x = torch.rand(100, w)
     print("x = ", x.size())
     y = tinymodel(x)
     print("y = ", x.size())
