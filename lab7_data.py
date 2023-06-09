@@ -1,9 +1,6 @@
 # %%
 from typing import Iterator
 import torch
-import os
-import glob
-import torchvision
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -33,6 +30,8 @@ df = None
 
 def LoadData(batch_size_train=10, batch_size_test=10):
     global df
+    global df1
+    global df2
     if df is None:
         print("loading datasets")
         df1 = pd.read_csv('car_data1.csv', low_memory=False)
@@ -90,5 +89,33 @@ if __name__ == '__main__':
     print(y, y.size())
 
 # %%
-#boxplot for brands
-#3d visualization
+
+#Data visualization before the model
+#Commented out because causes problems in the lab7.py file
+#If necessary, delete comments to be able to plot the figures.
+import seaborn as sns
+'''
+sns.barplot(data=df1, x='fuel_type', y='price')
+plt.ticklabel_format(style='plain', axis='y')
+plt.title('Price vs Fuel Type')
+plt.xlabel('Fuel Type')
+plt.ylabel('Price')
+plt.show()
+'''
+# %%
+'''
+plt.figure(figsize=[45,5])
+plt.subplot(1,3,1)
+sns.barplot(data=df1, x='car_age', y='price')
+plt.ticklabel_format(style='plain', axis='y')
+plt.title('Price vs Car Age')
+plt.xlabel('Car Age')
+plt.ylabel('Price')
+plt.show()
+'''
+# %%
+#corr = df1[['price', 'distance_travelled(kms)', 'car_age']].corr()
+#sns.heatmap(corr, annot=True)
+#plt.show()
+
+# %%
